@@ -5,7 +5,6 @@
 #include <iostream>
 #include <assert.h>
 
-// OBSERVAÇÂO: Usando C++ devido a especificação
 template <class T>
 class Layer {
     public:
@@ -40,15 +39,6 @@ T Layer<T>::z(int x, int y) const{
 	return zs[idx];
 };
 
-//template <class T>
-//int Layer<T>::width(){
-	//return dimx;
-//}
-//template <class T>
-//int Layer<T>::height(){
-	//return dimy;
-//}
-
 template <class T>
 void Layer<T>::read_file(std::string file){
 	dimx = 0; dimy = 0;
@@ -74,10 +64,3 @@ void Layer<T>::read_file(std::string file){
 		dimy++;
 	}
 }
-
-// Alimenta instância a partir de um arquivo de dados.
-// Semanticamente equivalente ao seguinte programa em Scheme: 
-// (λ(fname)(map (λ(line)(split " " line)) (split "\n" (fload fname)))
-// Que é mais muito eficiente, por ser automaticamente paralelizável.
-// (:
-
