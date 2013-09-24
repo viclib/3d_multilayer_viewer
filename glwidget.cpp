@@ -1,4 +1,14 @@
 #include "glwidget.h"
+#include <QDebug>
+
+std::vector<Layer<double> > layers;
+Layer<double>* selected_layer;
+double rotate_y;
+double rotate_x;
+bool show_axis;
+bool show_grid;
+bool show_wave;
+double cam_radius;
 
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
@@ -11,17 +21,64 @@ void GLWidget::initializeGL(){
 	show_grid=true;
 	show_wave=false;
 	cam_radius=2.0;
-	glClearColor(0.5,0.5,0.5,1.0);
-	//selected_layer = 0;
-	Layer<double> text("pq.txt",0.5,0.5,0.5);
+
+	glClearColor(0.0,0.0,0.0,1.0);
+	glEnable(GL_DEPTH_TEST | GL_LINE_SMOOTH);
 }
 
 void GLWidget::paintGL(){
-    glClear(GL_COLOR_BUFFER_BIT);
+	qDebug() << rotate_x;
+
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	gluPerspective(60.0f,1.0f,0.01f,650.0f);
+	gluLookAt(
+		0.0, cam_radius, cam_radius,
+		0.0, 0.0, 0.0,
+		0.0, 0.0, 1.0);
+	glRotatef( rotate_x, 1.0, 0.0, 0.0 );
+	glRotatef( rotate_y, 0.0, 0.0, 1.0 );
+
+	draw_layers();
+	if (show_grid)
+		draw_grid(-0.5,-0.5,0.1,0.1,11,11,&guide_z,&guide_col);
+	if (show_axis)
+		draw_axis();
+	//if (show_wave)
+		//draw_grid(-1,-1,0.05,0.05,41,41,&wavy_z,&wavy_col);
+
+	glFlush();
+	//glutSwapBuffers();
 }
 
 void GLWidget::resizeGL(){
 
+}
+void GLWidget::open_graphic(std::string file){
+	std::string line;
+	std::ifstream infile(file.c_str());
+	while (std::getline(infile, line)){
+		std::istringstream iss(line);
+		std::string layer_file;
+		std::getline(iss,layer_file,';');
+		std::string color_string;
+		std::getline(iss,color_string,',');
+		int rgb = (int)strtol(color_string.c_str(), NULL, 16);
+		int r = double((rgb&0xFF0000)>>16)/255.0;
+		int g = double((rgb&0x00FF00)>>8)/255.0;
+		int b = double(rgb&0x0000FF)/255.0;
+		qDebug() << r << " " << g << " " << b;
+		open_layer(layer_file,r,g,b);
+	}
+}
+
+void GLWidget::open_layer(std::string file, double r, double g, double b){
+	qDebug() << file.c_str();
+	Layer<double> layer(file, r, g, b);
+	layers.push_back(layer);
+	//qDebug() << layer.x << "," << layer.y << "," << layer.dimx << "," << layer.dimy;
+	updateGL();
 }
 
 void GLWidget::draw_quad(vec a, vec b, vec c, vec d){
@@ -66,25 +123,33 @@ void GLWidget::draw_axis(){
 	glColor3f(0.0,0.0,1.0); draw_line(vec(0.0,0.0,0.0),vec(0.0,0.0,1.0));
 }
 
-//double GLWidget::layer_z(const vec& pos){
-	//return selected_layer->z(pos.x,pos.y);
-	//return 5.0;
-//}
-//vec layer_col(const vec & pos){
-	//double c=0.5+double(pos.x)*0.05 + double(int(pos.x+pos.y)%2)*0.1;
-	//return vec(selected_layer->r*c,selected_layer->g*c,selected_layer->b*c);
-//}
-//void GLWidget::draw_layers(){
-    //for (unsigned int i=0; i<layers.size(); ++i){
-		//selected_layer = &layers[i];
-		//draw_grid(
-			//layers[i].x,
-			//layers[i].y,
-			//layers[i].dx,
-			//layers[i].dy,
-			//layers[i].dimx,
-			//layers[i].dimy, 
-			//layer_z,
-			//layer_col);
-	//}
-//}
+double layer_z(const vec& pos){
+	return selected_layer->z(pos.x,pos.y);
+}
+vec layer_col(const vec & pos){
+	double c=0.5+double(pos.x)*0.05 + double(int(pos.x+pos.y)%2)*0.1;
+	return vec(selected_layer->r*c,selected_layer->g*c,selected_layer->b*c);
+}
+
+double guide_z(const vec & pos){ 
+	return 0; 
+}
+vec guide_col(const vec & pos){ 
+	double add=int(pos.x+pos.y)%2*0.2; 
+	return vec(0.5+add,0.5+add,0.5+add); 
+}
+
+void GLWidget::draw_layers(){
+	for (unsigned int i=0; i<layers.size(); ++i){
+		selected_layer = &layers[i];
+		draw_grid(
+			layers[i].x,
+			layers[i].y,
+			layers[i].dx,
+			layers[i].dy,
+			layers[i].dimx,
+			layers[i].dimy, 
+			layer_z,
+			layer_col);
+	}
+}

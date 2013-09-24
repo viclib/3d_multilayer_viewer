@@ -14,8 +14,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
     mainwindow.cpp \
     glwidget.cpp \
-    vector3d.cpp \
-    layer.cpp
+    vector3d.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \

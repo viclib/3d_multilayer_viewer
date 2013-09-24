@@ -7,8 +7,30 @@
 #include <math.h>
 #include "vector3d.h"
 #include "layer.h"
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <assert.h>
+#include <stdlib.h>
+
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/glu.h>
+#endif
 
 typedef Vector3D vec;
+extern std::vector<Layer<double> > layers;
+extern Layer<double>* selected_layer;
+extern double rotate_y;
+extern double rotate_x;
+extern bool show_axis;
+extern bool show_grid;
+extern bool show_wave;
+extern double cam_radius;
 
 class GLWidget : public QGLWidget
 {
@@ -25,21 +47,18 @@ public:
 	void draw_grid(double x,double y,double dx,double dy,int w,int h,double(*z)(const vec&),vec(*col)(const vec&));
 	void draw_line(const vec & a, const vec & b);
 	void draw_axis();
-	//void draw_layers();
+	void draw_layers();
 
-	double rotate_y;
-	double rotate_x;
-	bool show_axis;
-	bool show_grid;
-	bool show_wave;
-	double cam_radius;
-
-	//std::vector<Layer<double> > layers;
-	//Layer<double>* selected_layer;
-	//double layer_z(const vec& pos);
+	void open_layer(std::string file, double r, double g, double b);
+	void open_graphic(std::string file);
+	//double wavy_z(const vec & pos);
+	//vec wavy_col(const vec & pos);
 };
 
-//vec layer_col(const vec & pos);
-//double wavy_z(const vec & pos);
-//vec wavy_col(const vec & pos);
+double guide_z(const vec & pos);
+vec guide_col(const vec & pos);
+
+double layer_z(const vec& pos);
+vec layer_col(const vec & pos);
+
 #endif // GLWIDGET_H
