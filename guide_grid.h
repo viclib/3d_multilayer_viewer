@@ -1,7 +1,10 @@
-double guide_z(const vec & pos){ 
-	return 0; 
+#ifndef GUIDE_GRID_H
+#define GUIDE_GRID_H
+double guide_z(const vec & pos){
+    return 0;
 }
-vec guide_col(const vec & pos){ 
-	double add=int(pos.x+pos.y)%2*0.2; 
-	return vec(0.5+add,0.5+add,0.5+add); 
+vec guide_col(const vec & pos){
+    double add=int(pos.x+pos.y)%2*0.2;
+    return vec(0.5+add,0.5+add,0.5+add);
 }
+#endif // GUIDE_GRID_H
