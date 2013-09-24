@@ -7,13 +7,13 @@ A simple QT-based 3d viewer for height maps.
 #### Example usage:
 
 1. Compile and run it using QtCreator
-2. File > Open > /examples/example.v3d
+2. File > Open > /example/example.v3d
 
 The program will then read the data on the files and display it on the screen. You should see something similar to this:
 
 ![print](https://raw.github.com/viclib/3d_multilayer_viewer/master/example/example.png)
 
-Observe the files at `/examples` to understand how to include your own layers.
+Observe the files at `/example` to understand how to include your own layers.
 
 ---
 
