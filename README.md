@@ -27,4 +27,4 @@ A | Toggle axis
 G | Toggle guides
 U/O | Zoom in/out
 
-J/K/L/I are aliases for the keys.
+J/K/L/I are aliases for the arrows.
