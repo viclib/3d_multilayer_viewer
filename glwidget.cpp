@@ -58,6 +58,7 @@ void GLWidget::open_graphic(std::string file){
 		std::istringstream iss(line);
 		std::string layer_file;
 		std::getline(iss,layer_file,';');
+		layer_file = file.substr(0,file.rfind("/"))+"/"+layer_file;
 		std::string color_string;
 		std::getline(iss,color_string,',');
 		int rgb = (int)strtol(color_string.c_str(), NULL, 16);
