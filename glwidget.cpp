@@ -11,7 +11,7 @@ void GLWidget::initializeGL(){
 	show_grid=true;
 	show_wave=false;
 	cam_radius=2.0;
-    glClearColor(0.5,0.5,0.5,1.0);
+	glClearColor(0.5,0.5,0.5,1.0);
 	//selected_layer = 0;
 	Layer<double> text("pq.txt",0.5,0.5,0.5);
 }
