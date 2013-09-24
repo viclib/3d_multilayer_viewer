@@ -24,8 +24,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
-{
+class Ui_MainWindow {
 public:
     QAction *actionOpen;
     QWidget *centralWidget;

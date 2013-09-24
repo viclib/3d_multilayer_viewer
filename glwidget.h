@@ -32,8 +32,7 @@ extern bool show_grid;
 extern bool show_wave;
 extern double cam_radius;
 
-class GLWidget : public QGLWidget
-{
+class GLWidget : public QGLWidget {
     Q_OBJECT
 public:
     explicit GLWidget(QWidget *parent = 0);

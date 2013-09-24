@@ -27,8 +27,6 @@ void GLWidget::initializeGL(){
 }
 
 void GLWidget::paintGL(){
-	qDebug() << rotate_x;
-
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -45,16 +43,14 @@ void GLWidget::paintGL(){
 		draw_grid(-0.5,-0.5,0.1,0.1,11,11,&guide_z,&guide_col);
 	if (show_axis)
 		draw_axis();
-	//if (show_wave)
-		//draw_grid(-1,-1,0.05,0.05,41,41,&wavy_z,&wavy_col);
 
 	glFlush();
-	//glutSwapBuffers();
 }
 
 void GLWidget::resizeGL(){
-
+	//todo: adjust aspect ratio
 }
+
 void GLWidget::open_graphic(std::string file){
 	std::string line;
 	std::ifstream infile(file.c_str());
@@ -68,16 +64,13 @@ void GLWidget::open_graphic(std::string file){
 		int r = double((rgb&0xFF0000)>>16)/255.0;
 		int g = double((rgb&0x00FF00)>>8)/255.0;
 		int b = double(rgb&0x0000FF)/255.0;
-		qDebug() << r << " " << g << " " << b;
 		open_layer(layer_file,r,g,b);
 	}
 }
 
 void GLWidget::open_layer(std::string file, double r, double g, double b){
-	qDebug() << file.c_str();
 	Layer<double> layer(file, r, g, b);
 	layers.push_back(layer);
-	//qDebug() << layer.x << "," << layer.y << "," << layer.dimx << "," << layer.dimy;
 	updateGL();
 }
 
