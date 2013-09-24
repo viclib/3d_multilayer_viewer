@@ -25,6 +25,4 @@ Up/Down | Increase/decrease camera inclination
 Left/Right | Rotate camera
 A | Toggle axis
 G | Toggle guides
-U/O | Zoom in/out
-
-J/K/L/I are aliases for the arrows.
+J/K | Zoom in/out
