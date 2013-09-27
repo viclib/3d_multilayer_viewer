@@ -17,8 +17,6 @@ class Layer {
 		read_file(file);
 	};
 
-	~Layer(){};
-
 	T z(int x, int y) const{
 		unsigned int idx = y*dimx+x;
 		assert (idx < dimx*dimy);
