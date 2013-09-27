@@ -28,13 +28,15 @@ void GLWidget::initializeGL(){
 
 void GLWidget::paintGL(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
 
-	gluPerspective(60.0f,1.0f,0.01f,650.0f);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluPerspective(60.0f,(GLfloat)width/(GLfloat)height,0.01f,650.0f);
 	gluLookAt(
 		0.0, cam_radius, cam_radius,
 		0.0, 0.0, 0.0,
 		0.0, 0.0, 1.0);
+	glViewport(0, 0, width, height);
 	glRotatef( rotate_x, 1.0, 0.0, 0.0 );
 	glRotatef( rotate_y, 0.0, 0.0, 1.0 );
 
@@ -47,8 +49,9 @@ void GLWidget::paintGL(){
 	glFlush();
 }
 
-void GLWidget::resizeGL(){
-	//todo: adjust aspect ratio
+void GLWidget::resizeGL(int width_, int height_){
+	width = width_; 
+	height = height_;
 }
 
 void GLWidget::open_graphic(std::string file){

@@ -40,7 +40,7 @@ public:
 
     void initializeGL();
     void paintGL();
-    void resizeGL();
+    void resizeGL(int,int);
 
 	void draw_quad(vec a, vec b, vec c, vec d);
 	void draw_grid(double x,double y,double dx,double dy,int w,int h,double(*z)(const vec&),vec(*col)(const vec&));
@@ -52,6 +52,10 @@ public:
 	void open_graphic(std::string file);
 	//double wavy_z(const vec & pos);
 	//vec wavy_col(const vec & pos);
+
+private:
+	unsigned int width;
+	unsigned int height;
 };
 
 double guide_z(const vec & pos);
